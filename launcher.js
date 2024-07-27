@@ -4,18 +4,45 @@ document.getElementById('launchButton').addEventListener('click', () => {
 
     // Simulate loading process
     setTimeout(() => {
-        logOutput.innerHTML += 'Loading resources...\n';
+        logOutput.innerHTML += 'Loading JAR file...\n';
+        fetchJarFile();
     }, 1000);
-
-    setTimeout(() => {
-        logOutput.innerHTML += 'Initializing game...\n';
-    }, 2000);
-
-    setTimeout(() => {
-        logOutput.innerHTML += 'Game started successfully!\n';
-        openGameWindow();
-    }, 3000);
 });
+
+function fetchJarFile() {
+    fetch('assets/minecraft.jar')
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Failed to load JAR file');
+            }
+        })
+        .then(blob => {
+            // Simulate processing the JAR file
+            setTimeout(() => {
+                const logOutput = document.getElementById('logOutput');
+                logOutput.innerHTML += 'Extracting files...\n';
+                simulateJarProcessing(blob);
+            }, 1000);
+        })
+        .catch(error => {
+            const logOutput = document.getElementById('logOutput');
+            logOutput.innerHTML += `${error.message}\n`;
+        });
+}
+
+function simulateJarProcessing(blob) {
+    // This is just a simulation of processing the JAR file
+    setTimeout(() => {
+        const logOutput = document.getElementById('logOutput');
+        logOutput.innerHTML += 'Initializing game...\n';
+        setTimeout(() => {
+            logOutput.innerHTML += 'Game started successfully!\n';
+            openGameWindow();
+        }, 1000);
+    }, 2000);
+}
 
 function openGameWindow() {
     const gameWindow = window.open('', '', 'width=800,height=600');
